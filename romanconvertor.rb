@@ -1,12 +1,10 @@
 
 
 def fromRoman(roman_number)
-  original = roman_number
   roman_dictionary = { 'I' => 1, 'V' => 5, 'X' => 10, 'L' => 50, 'C' => 100, 'D' => 500, 'M' => 1000 }
 
   subtractions_dictionary = { 'IV' => 4, 'IX' => 9, 'XL' => 40, 'XC' => 90, 'CD' => 400, 'CM' => 900 }
 
-  # puts 'input is ' + roman_number
   check_for_allowed(roman_number, roman_dictionary)
   compute_values(roman_number, subtractions_dictionary, roman_dictionary)
 
@@ -43,50 +41,30 @@ def has_subtractions(roman_number, subtractions_dictionary)
   total_roman_array.each do |x|
     total_roman += x
   end
-  puts 'new total roman string ' + total_roman
-  #the problem is because this .slice code is screwing up the orignial somehow
-    # has_subtractions.each do |subtraction|
-    #   if roman_number.include? subtraction
-    #     # roman_number.slice!(subtraction)
-    #     puts 'roman number after slice ' + roman_number
-    #   end
-    # end
-  # puts 'string is now ' + roman_number
-  # return compute_subtractions(has_subtractions, subtractions_dictionary)
   return has_subtractions
 end
 
 def compute_subtractions(subtractions, dictionary)
-  # puts 'computing subtractions'
-  # puts subtractions.inspect
   total = 0
   subtractions.each do |subtraction|
     total += dictionary.fetch(subtraction)
   end
-  # puts 'subtractions total is ' + total.to_s
   total
 end
 
 def compute_values(roman_number, subtractions_dictionary, roman_dictionary)
   total = 0
-  # puts 'right before adding subtractions the array is ' + roman_number.to_s
-  # total += has_subtractions(roman_number, subtractions_dictionary)
   subtractions = has_subtractions(roman_number, subtractions_dictionary)
-  puts subtractions.inspect
-  puts 'roman number during final compute is ' + roman_number
 
   total_roman = String.new('')
   total_roman_array = roman_number.chars
   total_roman_array.each do |x|
     total_roman += x
   end
-  puts 'new total roman string ' + total_roman
 
   subtractions.each do |subtraction|
     if total_roman.include? subtraction
       total_roman.slice!(subtraction)
-      puts 'roman number after slice ' + roman_number
-      puts 'total roman after slice ' + total_roman
     end
   end
 
@@ -95,10 +73,8 @@ def compute_values(roman_number, subtractions_dictionary, roman_dictionary)
   end
 
   total_roman.chars.each do |roman|
-    puts 'adding ' + roman_dictionary.fetch(roman).to_s + ' to the total, from ' + roman.to_s
     total += roman_dictionary.fetch(roman)
   end
-  # puts 'total is ' + total.to_s
   return total
 end
 
@@ -123,13 +99,11 @@ def compute_to_roman(input, roman_dictionary, subtractions_dictionary)
   elsif subtractions_dictionary.include? input
     subtractions_dictionary.fetch(input)
   else
-    # puts 'running the else case because it is a complex roman'
     to_roman_subtractions_check(input, roman_dictionary, subtractions_dictionary)
   end
 end
 
 def to_roman_subtractions_check(input, roman_dictionary, subtractions_dictionary)
-  # puts 'Checking for subtraction cases'
   split_number_array = input.to_s.chars
   subtractions_case = false
   index = 0
@@ -149,7 +123,6 @@ def to_roman_subtractions_check(input, roman_dictionary, subtractions_dictionary
 end
 
 def solve_subtractions_case(input, subtractions_dictionary, roman_dictionary)
-  # puts 'solving for subtractions case'
   final_roman = ''
   subtraction_place_check = input.to_s.chars
   counter = 0
@@ -157,8 +130,6 @@ def solve_subtractions_case(input, subtractions_dictionary, roman_dictionary)
     subtraction_place_check[counter] = subtraction_place_check[counter].to_i
     counter += 1
   end
-  # puts subtraction_place_check.inspect
-
   if subtraction_place_check.length.equal?(2)
     puts 'length is 2'
     final_roman = solve_subtractions_in_10(subtraction_place_check, roman_dictionary)
@@ -168,12 +139,10 @@ def solve_subtractions_case(input, subtractions_dictionary, roman_dictionary)
     final_roman = solve_subtractions_in_100(subtraction_place_check, roman_dictionary)
 
   elsif subtraction_place_check.length.equal?(4)
-    # puts 'length is 4'
     subtraction_place_check[0] = subtraction_place_check[0].to_s << '000'
     subtraction_place_check[0] = subtraction_place_check[0].to_i
     final_roman << solve_simple_roman(subtraction_place_check[0], roman_dictionary)
     subtraction_place_check.shift
-    # puts subtraction_place_check.inspect
     final_roman << solve_subtractions_in_100(subtraction_place_check, roman_dictionary)
   end
 
@@ -181,7 +150,6 @@ def solve_subtractions_case(input, subtractions_dictionary, roman_dictionary)
 end
 
 def solve_subtractions_in_100(subtraction_place_check, roman_dictionary)
-  # puts 'solving in 100 position'
   final_roman = ''
   if subtraction_place_check[0].equal?(4) || subtraction_place_check[0].equal?(9)
     if subtraction_place_check[0].equal?(4)
@@ -219,7 +187,6 @@ end
 
 def solve_subtractions_in_10(subtraction_place_check, roman_dictionary)
   final_roman = ''
-  # puts 'solving in 10 position'
   if subtraction_place_check[0].equal?(4) || subtraction_place_check[0].equal?(9)
     if subtraction_place_check[0].equal?(4)
       final_roman << 'XL'
@@ -278,19 +245,8 @@ def solve_simple_maths(input, roman_dictionary, roman_string)
 end
 
 
-
-
-# fromRoman('MCDXCVIII')
-# fromRoman('III')
-
-# x = toRoman(1999)
-# puts x
-# y = fromRoman(x)
-# puts y
-#
 original = 'MCDXCVIII'
-# original = 'IV'
-puts 'original ' + original
 x = fromRoman(original)
-puts 'original ' + original
 puts x
+y = toRoman(x)
+puts y
