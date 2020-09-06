@@ -38,17 +38,22 @@ def has_subtractions(roman_number, subtractions_dictionary)
       y += 1
     end
   end
-  #the problem is because this .slice code is screwing up the orignial somehow
-  has_subtractions.each do |subtraction|
-    puts has_subtractions.inspect
-    if roman_number.include? subtraction
-      roman_number.slice!(subtraction)
-      puts 'roman number after slice ' + roman_number
-    end
+  total_roman = String.new('')
+  total_roman_array = roman_number.chars
+  total_roman_array.each do |x|
+    total_roman += x
   end
+  puts 'new total roman string ' + total_roman
+  #the problem is because this .slice code is screwing up the orignial somehow
+    # has_subtractions.each do |subtraction|
+    #   if roman_number.include? subtraction
+    #     # roman_number.slice!(subtraction)
+    #     puts 'roman number after slice ' + roman_number
+    #   end
+    # end
   # puts 'string is now ' + roman_number
-  puts 'the subtractions are ' + has_subtractions.inspect
-  return compute_subtractions(has_subtractions, subtractions_dictionary)
+  # return compute_subtractions(has_subtractions, subtractions_dictionary)
+  return has_subtractions
 end
 
 def compute_subtractions(subtractions, dictionary)
@@ -65,9 +70,32 @@ end
 def compute_values(roman_number, subtractions_dictionary, roman_dictionary)
   total = 0
   # puts 'right before adding subtractions the array is ' + roman_number.to_s
-  total += has_subtractions(roman_number, subtractions_dictionary)
+  # total += has_subtractions(roman_number, subtractions_dictionary)
+  subtractions = has_subtractions(roman_number, subtractions_dictionary)
+  puts subtractions.inspect
   puts 'roman number during final compute is ' + roman_number
-  roman_number.chars.each do |roman|
+
+  total_roman = String.new('')
+  total_roman_array = roman_number.chars
+  total_roman_array.each do |x|
+    total_roman += x
+  end
+  puts 'new total roman string ' + total_roman
+
+  subtractions.each do |subtraction|
+    if total_roman.include? subtraction
+      total_roman.slice!(subtraction)
+      puts 'roman number after slice ' + roman_number
+      puts 'total roman after slice ' + total_roman
+    end
+  end
+
+  subtractions.each do |subtraction|
+    total += subtractions_dictionary.fetch(subtraction)
+  end
+
+  total_roman.chars.each do |roman|
+    puts 'adding ' + roman_dictionary.fetch(roman).to_s + ' to the total, from ' + roman.to_s
     total += roman_dictionary.fetch(roman)
   end
   # puts 'total is ' + total.to_s
